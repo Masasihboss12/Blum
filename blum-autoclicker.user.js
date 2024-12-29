@@ -301,19 +301,27 @@ try {
 	}
 
 	// Функция AutoPlay
-	function checkAndClickPlayButton() {
-		const playButtons = document.querySelectorAll('button.kit-button.is-large.is-primary, button.kit-pill.reset.is-type-white.pill');
+	function getRandomDelay() {
+    return Math.floor(Math.random() * (10000 - 5000 + 1)) + 5000; // Random antara 5000ms (5s) hingga 10000ms (10s)
+}
 
-		playButtons.forEach(button => {
-			if (!isGameToolPaused && GAME_SETTINGS.autoClickPlay && button.textContent.trim().length > 0) {
-				setTimeout(() => {
-					gameStats.isGameOver = true;
-					resetGameStats();
-					button.click();
-				}, getNewGameDelay());
-			}
-		});
-	}
+function checkAndClickPlayButton() {
+    const playButtons = document.querySelectorAll('button.kit-button.is-large.is-primary, button.kit-pill.reset.is-type-white.pill');
+
+    playButtons.forEach(button => {
+        if (!isGameToolPaused && GAME_SETTINGS.autoClickPlay && button.textContent.trim().length > 0) {
+            const randomDelay = getRandomDelay();
+            console.log(`Menunggu selama ${randomDelay / 1000} detik sebelum mengklik tombol...`);
+            
+            setTimeout(() => {
+                gameStats.isGameOver = true;
+                resetGameStats();
+                button.click();
+                console.log("Tombol Play diklik!");
+            }, randomDelay);
+        }
+    });
+}
 
 	// Функция обновления страницы в случае ошибки
 	function checkAndClickResetButton() {
